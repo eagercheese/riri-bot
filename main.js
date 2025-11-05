@@ -23,7 +23,7 @@ client.on('messageCreate', (message) => {
   if (message.content.startsWith('!hello')) {
     const user = message.mentions.members.first();
 
-    if (user.size > 0) {
+    if (message.mentions.users.size > 0) {
         message.reply(`Hello, ${user.displayName}! 👋`);
     } else {
         message.reply(`Hello, ${message.author.globalName}! 👋`);
@@ -74,7 +74,7 @@ client.on('messageCreate', (message) => {
       "Very doubtful."
     ];
 
-    const randomizer = Math.floor(Math.random() * responses.length);
+    const randomizer = Math.floor(Math.random() * magic8BallResponses.length);
     const responsesRandomizer = magic8BallResponses[randomizer];
     message.reply(`${responsesRandomizer}`);
   }
@@ -84,7 +84,7 @@ client.on('messageCreate', (message) => {
     message.reply (` 
       Server Name: ${message.guild.name} \n 
       Member Count: ${message.guild.memberCount} \n 
-      Created at: ${message.guild.createdAt.toLocaleString} `)
+      Created at: ${message.guild.createdAt} `)
   }
 
   if(message.content.startsWith("!pick")) {
@@ -97,12 +97,14 @@ client.on('messageCreate', (message) => {
 
   if(message.content.startsWith("!roll")) {
     let choices = message.content.split(" ");
-    choices.splice(0, 1);
-    const convertToInt = Number(choices);
-    const randomizer = Math.floor(Math.random() * convertToInt[0]);
-    const responsesRandomizer = numbers[randomizer];
+    const convertToInt = Number(choices[1]);
     
-    message.reply(`Number ${responsesRandomizer}`);
+    if (!convertToInt || convertToInt < 1) {
+      return message.reply("Please enter a number. ex: !roll 55");
+    }
+    
+    const randomizer = Math.floor(Math.random() * convertToInt + 1);
+    message.reply(`Number ${randomizer} out of ${convertToInt}`);
   }
 
   if (message.content.startsWith("!userinfo")){

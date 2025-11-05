@@ -1,2 +1,1 @@
-const now = new Date();
-console.log(now);
+// This is the testing ground for commands
